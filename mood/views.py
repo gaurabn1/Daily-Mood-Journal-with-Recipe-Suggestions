@@ -124,7 +124,7 @@ def register(request):
         form = RegisterForm(request.POST, request.FILES)
         print(form.errors)
         if form.is_valid():
-            user = form.save(commit=False)
+            user = form.save(commit=False)  
             user.set_password(form.cleaned_data.get('password'))
             user.save()
             messages.success(request, f"Account created for {user.first_name}!")

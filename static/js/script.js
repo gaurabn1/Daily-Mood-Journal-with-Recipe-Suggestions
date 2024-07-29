@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
     $('#logout').on('click', function (e) {
         e.preventDefault();
@@ -6,7 +5,6 @@ $(document).ready(function () {
             $("#logout_form").submit();
         }
     })
-
 
 
     $("#edit-profile-button").on('click', function (e) {
