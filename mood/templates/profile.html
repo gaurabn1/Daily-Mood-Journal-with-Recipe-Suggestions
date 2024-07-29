@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<div class="container mt-4">
+    <h2>Profile</h2>
+<hr>
+    <!-- Flex Container for Profile Info and Edit Section -->
+    <div class="d-flex flex-row justify-content-between">
+        <!-- Profile Info and Journal Statistics-->
+        <div class="profile-and-stats flex-grow-1 mb-5">
+            <div class="profile-info">
+                {% if user.profile_image %}
+                    <img src="{{ user.profile_image.url }}" alt="Profile Image" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
+                {% else %}
+                    <img src="{% static 'default-profile-image.png' %}" alt="Default Profile Image" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
+                {% endif %}
+                <h3 class="mt-2">{{ user.first_name }} {{ user.last_name }}</h3>
+                <p>Email: {{ user.email }}</p>
+                <a href="#" class="btn btn-primary" id="edit-profile-button">Edit Profile</a>
+            </div>
+
+            <!-- Journal Statistics -->
+            <div class="mt-4">
+                <h4>Journal Statistics</h4>
+                <p>Total Journals: {{ journal_count }}</p>
+                <p>Average Journals per Week: {{ average_journals_per_week|floatformat:2 }}</p>
+            </div>
+        </div>
+
+        <!-- Edit Profile Form -->
+        <div class="edit-profile d-none" id="edit-profile">
+            <h4>Edit Profile</h4><hr>
+            <form method="post" enctype="multipart/form-data" action="{% url 'edit_profile' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_profile_image" class="form-label">Profile Image:</label>
+                    <input type="file" class="form-control" id="id_profile_image" name="profile_image">
+                </div>
+                <div class="mb-3">
+                    <label for="id_first_name" class="form-label">First Name:</label>
+                    <input type="text" class="form-control" id="id_first_name" name="first_name" value="{{ user.first_name }}">
+                </div>
+                <div class="mb-3">
+                    <label for="id_last_name" class="form-label">Last Name:</label>
+                    <input type="text" class="form-control" id="id_last_name" name="last_name" value="{{ user.last_name }}">
+                </div>
+                <div class="mb-3">
+                    <label for="id_email" class="form-label">Email:</label>
+                    <input type="email" class="form-control" id="id_email" name="email" value="{{ user.email }}">
+                </div>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="mt-4">
+        <h4>Recent Activities</h4>
+        <ul class="list-group">
+            {% for entry in recent_activities %}
+                <li class="list-group-item">
+                    <strong>{{ entry.date }}</strong>: {{ entry.journal_entry }}
+                </li>
+            {% empty %}
+                <li class="list-group-item">No recent activities found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+
+{% endblock content %}

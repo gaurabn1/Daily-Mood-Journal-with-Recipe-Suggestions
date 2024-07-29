@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<div class="container mt-4">
+    <h2><strong>{{ recipe.title }}</strong></h2>
+    {% if recipe.recipe_image %}
+    <img src="{{ recipe.recipe_image.url }}" class="img-fluid mb-4 d-flex m-auto" height="500" width="500" alt="{{ recipe.title }}">
+    {% endif %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"><strong>Description</strong></h5>
+            <p class="card-text">{{ recipe.description }}</p>
+
+            <h5 class="card-title"><strong>Ingredients</strong></h5>
+            <ul class="list-group list-group-flush mb-3">
+                {% for ingredient in ingredients %}
+                <li class="list-group-item">{{ ingredient }}</li>
+                {% endfor %}
+            </ul>
+
+            <h5 class="card-title"><strong>Instructions</strong></h5>
+            <ol class="list-group list-group-flush mb-3">
+                {% for instruction in instructions %}
+                <li class="list-group-item">{{ instruction }}</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+</div>
+{% include 'footer.html' %}
+
+{% endblock content %}

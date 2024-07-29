@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex flex-column min-vh-100 justify-content-between" style="height: 100vh;">
+    {% include 'navbar.html' %}
+
+    <main class="flex-fill d-flex justify-content-between align-items-center" >
+        <div class="box p-4 text-center" style="max-width: 600px; width: 100%;">
+            <h2 class="mb-4">Select Your Mood</h2>
+            <div class="row">
+                {% for mood in moods %}
+                <div class="col-md-4 col-6 mb-3">
+                    <a href="{% url 'mood_recipes' mood=mood %}" class="btn btn-outline-primary w-100">{{ mood }}</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+
+    {% include 'footer.html' %}
+</div>
+{% endblock content %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'navbar.html' %}
+
+<div class="container">
+    <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="box p-5">
+            <h2 class="text-center mb-4">Recipes</h2>
+            <div class="row">
+                {% for recipe in recipes %}
+                <div class="col-md-4 col-sm-6 col-12 mb-3">
+                    <div class="recipe-card p-3 h-100">
+                        <div class="recipe-image-container">
+                            <img src="{{ recipe.recipe_image.url }}" alt="{{ recipe.title }}" class="recipe-image">
+                        </div>
+                        <h4 class="recipe-title">{{ recipe.title }}</h4>
+                        <p class="recipe-description">{{ recipe.description }}</p>
+                        <a href="{% url 'recipe' recipe.id %}" class="btn btn-outline-primary">View Recipe</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+
+{% endblock content %}

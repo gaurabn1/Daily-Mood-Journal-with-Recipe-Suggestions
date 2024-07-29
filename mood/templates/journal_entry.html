@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<div class="container mt-4">
+    <h2>Daily Journal</h2>
+    <form action="" method="POST" class="mb-4">
+        {% csrf_token %}
+        {{ journal|crispy }}
+        <button type="submit" class="btn btn-success mt-2">Post</button>
+    </form>
+
+    <div class="mt-4">
+        <div class="mb-4">
+            <div class="list-group">
+                {% if journals %}
+                {% for journal in journals %}
+                <div
+                    class="list-group-item list-group-item-action mb-2 d-flex justify-content-between align-items-center">
+                    <div class="d-flex flex-column flex-grow-1">
+                        <h5 class="mb-1">{{journal}} </h5>
+                        <div class="journal-content">
+                            <p class="mb-1" id="journal_content_entry">{{journal.journal_entry}}</p>
+                            <form action="{% url 'edit_journal' journal.id %}" id="edit_journal_form" method="post" class="mb-2">
+                                {% csrf_token %}
+                                <textarea name="edit_journal_entry"
+                                    class="form-control journal-entry-edit d-none"
+                                    id="edit_journal_entry_textarea" rows="1">{{journal.journal_entry}}</textarea>
+                            </form>
+                        </div>
+                        <small class="text-muted">{{journal.date}} | <strong>Mood:</strong>
+                            {{journal.mood}}</small>
+                    </div>
+                    <div class="btn-group d-flex flex-column justify-content-center gap" role="group">
+                        <button type="submit" class="btn btn-warning btn-sm w-100 mb-2"
+                            id="edit_journal">Edit</button>
+                        <form action="{% url 'delete_journal' journal.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" id="delete_journal"
+                                class="btn btn-danger btn-sm w-100">Delete</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div
+                    class="list-group-item list-group-item-action mb-2 d-flex justify-content-between align-items-center">
+                    <div class="d-flex flex-column flex-grow-1">
+                        <h5 class="mb-1"> No Journal Yet. </h5>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if journals.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="First">
+                    <span aria-hidden="true">&laquo; First</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ journals.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">Previous</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% for num in journals.paginator.page_range %}
+            {% if journals.number == num %}
+            <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+            {% elif num > journals.number|add:'-3' and num < journals.number|add:'3' %}
+            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+            {% endfor %}
+
+            {% if journals.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ journals.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">Next</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ journals.paginator.num_pages }}" aria-label="Last">
+                    <span aria-hidden="true">Last &raquo;</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% include 'footer.html' %}
+</div>
+
+{% endblock content %}
