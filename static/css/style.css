@@ -9,4 +9,12 @@ body{
 }
 
 
+.fixed-size-image {
+    width: 215px;
+    height: 215px;
+    object-fit: cover;
+    display: flex;
+    margin: 0 auto;
+}
+
 

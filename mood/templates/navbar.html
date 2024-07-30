@@ -19,7 +19,11 @@
             </li>
         </ul>
         <span class="navbar-text mx-3">
+            {% if user.first_name %}
             Welcome, {{ user.first_name }}!
+            {% else %}
+            Welcome, {{ user.username }}!
+            {% endif %}
         </span>
         <a class="btn btn-outline-primary" id="logout" href="#">Logout</a>
         <form class="d-none" id="logout_form" action="{% url 'logout' %}" method="post">
