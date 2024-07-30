@@ -50,12 +50,12 @@ def recipe(request, id):
 @login_required
 def daily_journal(request):
     if request.method == "POST":
-        print('post method')
         journal_form = MoodEntryForm(request.POST)
         if journal_form.is_valid():
             journal = journal_form.save(commit=False)
             journal.user = request.user
             journal.save()
+            RecentActivity.objects.create(user = request.user, activity = "You created the journal")
             return redirect('journal')
         print(journal)
     else:
@@ -73,6 +73,7 @@ def daily_journal(request):
 def delete_journal(request, id):
     journal = MoodEntry.objects.get(id = id)
     journal.delete()
+    RecentActivity.objects.create(user = request.user, activity = "You deleted the journal")
     return redirect('journal')
 
 
@@ -100,10 +101,14 @@ def profile(request):
     weeks_passed = (todays_date - start_of_the_year).days // 7
     average_journals_per_week = journals_this_year / max(weeks_passed, 1)
 
+    #Recent Activities
+    recent_activities = RecentActivity.objects.filter(user = user)
+
     context = {
         "user" : user,
         "journal_count" : journal_count,
         "average_journals_per_week" : average_journals_per_week,
+        "recent_activities" : recent_activities,
     }
 
     return render(request, 'profile.html', context)
@@ -116,6 +121,13 @@ def edit_profile(request):
         if form.is_valid():
             form.save()
     
+    return redirect('profile')
+
+
+@login_required
+def delete_recent_activity(request, id):
+    entry = RecentActivity.objects.get(id = id)
+    entry.delete()
     return redirect('profile')
     
     

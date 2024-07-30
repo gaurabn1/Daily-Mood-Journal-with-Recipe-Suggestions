@@ -38,8 +38,7 @@
                             id="edit_journal">Edit</button>
                         <form action="{% url 'delete_journal' journal.id %}" method="post">
                             {% csrf_token %}
-                            <button type="submit" id="delete_journal"
-                                class="btn btn-danger btn-sm w-100">Delete</button>
+                            <button type="submit" class="btn btn-danger delete_journal btn-sm w-100">Delete</button>
                         </form>
                     </div>
                 </div>

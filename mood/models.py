@@ -56,3 +56,12 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+class RecentActivity(models.Model):
+    user = models.ForeignKey(CustomUser, models.CASCADE)
+    activity = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user} - {self.activity}'

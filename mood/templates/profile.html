@@ -61,9 +61,14 @@
         <h4>Recent Activities</h4>
         <ul class="list-group">
             {% for entry in recent_activities %}
-                <li class="list-group-item">
-                    <strong>{{ entry.date }}</strong>: {{ entry.journal_entry }}
+                <li class="list-group-item d-flex justify-content-between">
+                    <span class="d-flex align-items-center">{{ entry.activity }}: <strong> {{ entry.date }}</strong></span>
+                    <form action="{% url 'delete_recent_activity' entry.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-warning delete-recent-entry" >Delete</button>
+                    </form>
                 </li>
+
             {% empty %}
                 <li class="list-group-item">No recent activities found.</li>
             {% endfor %}

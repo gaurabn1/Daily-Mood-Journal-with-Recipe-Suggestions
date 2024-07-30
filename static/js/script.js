@@ -18,7 +18,7 @@ $(document).ready(function () {
         }
     })
 
-    $('#delete_journal').on('click', function (e) {
+    $('.delete_journal').on('click', function (e) {
         e.preventDefault()
         if (confirm("Are you sure to delete this entry?")) {
             $(this).closest('form').submit();
@@ -38,4 +38,13 @@ $(document).ready(function () {
         }
     })
 
+    $('.delete-recent-entry').on('click', function(e){
+        e.preventDefault()
+        if(confirm("Are you sure to delete this entry?")){
+            $(this).closest('form').submit()
+        }
+    })
+
+
 })
+
